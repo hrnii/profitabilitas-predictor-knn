@@ -3,17 +3,6 @@ import pandas as pd
 import joblib
 from sklearn.base import BaseEstimator, TransformerMixin
 
-# === Definisi ulang transformer custom ===
-class MenuItemFrequencyEncoder(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        X_series = pd.Series(X.squeeze())  # pastikan jadi 1D
-        self.freq_map_ = X_series.value_counts(normalize=True).to_dict()
-        return self
-
-    def transform(self, X):
-        X_series = pd.Series(X.squeeze())  # pastikan jadi 1D
-        return X_series.map(self.freq_map_).fillna(0).values.reshape(-1, 1)
-
 # === Load pipeline & model ===
 preprocessing = joblib.load("pipeline_preprocessing.pkl")
 knn_model = joblib.load("knn_model.pkl")
@@ -64,4 +53,5 @@ if submitted:
         st.success(f"💡 Prediksi: **{hasil}**")
 
     except Exception as e:
+
         st.error(f"Terjadi kesalahan: {e}")
